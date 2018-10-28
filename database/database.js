@@ -60,9 +60,23 @@ async function deleteFromCollectionById(collection, id) {
     });
 }
 
+async function updateInCollection(data, collection) {
+    await openConnection();
+    let id = data._id;
+    delete data._id;
+    return db.collection(collection).updateOne({_id : new mongo.ObjectID(id)}, {$set : data}).then(result => {
+        closeConnection();
+        return result;
+    }).catch(err => {
+        closeConnection();
+        throw err;
+    });
+}
+
 module.exports = {
     writeToCollection,
     getAllFromCollection,
     deleteFromCollectionById,
-    getFromCollectionById
+    getFromCollectionById,
+    updateInCollection
 }

@@ -50,6 +50,16 @@ app.delete('/car/:id', (request, response) => {
     });
 });
 
+app.put('/car', (request, response) => {
+    const data = request.body;
+    db.updateInCollection(data, "car").then(result => {
+        response.type('application/json');
+        response.json({updated : result});
+    }).catch(err => {
+        response.status(400).send('Bad request.\n' + err);
+    });
+});
+
 app.listen(port, () => {
     console.info('Listening for incoming calls on port', port);
 });
