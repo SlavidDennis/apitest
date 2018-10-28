@@ -31,7 +31,17 @@ async function getAllFromCollection(collection) {
     await openConnection();
     return db.collection(collection).find().toArray().then(result => {
         closeConnection();
-        console.log(result);
+        return result;
+    }).catch(err => {
+        closeConnection();
+        throw err;
+    });
+}
+
+async function deleteFromCollectionById(collection, id) {
+    await openConnection();
+    return db.collection(collection).deleteOne({_id: new mongo.ObjectID(id)}).then(result => {
+        closeConnection();
         return result;
     }).catch(err => {
         closeConnection();
@@ -41,5 +51,6 @@ async function getAllFromCollection(collection) {
 
 module.exports = {
     writeToCollection,
-    getAllFromCollection
+    getAllFromCollection,
+    deleteFromCollectionById
 }

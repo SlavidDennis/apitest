@@ -16,7 +16,7 @@ app.post('/car', (request, response) => {
     const data = request.body;
     db.writeToCollection(data, "car").then(result => {
         response.type('application/json');
-        response.status(201).send('{"_id" : "' + result + '"}');
+        response.json({created : result});
     }).catch(err => {
         response.status(400).send('Bad request.\n' + err);
     });
@@ -26,6 +26,15 @@ app.get('/car', (request, response) => {
     db.getAllFromCollection("car").then(result => {
         response.type('application/json');
         response.status(200).send(result);
+    }).catch(err => {
+        response.status(500).send('Internal server error.\n' + err);
+    });
+});
+
+app.delete('/car/:id', (request, response) => {
+    let id = request.params.id;
+    db.deleteFromCollectionById("car", id).then(result => {
+        response.json({success : id});
     }).catch(err => {
         response.status(500).send('Internal server error.\n' + err);
     });
