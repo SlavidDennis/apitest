@@ -38,6 +38,17 @@ async function getAllFromCollection(collection) {
     });
 }
 
+async function getFromCollectionById(collection, id) {
+    await openConnection();
+    return db.collection(collection).findOne({_id : new mongo.ObjectID(id)}).then(result => {
+        closeConnection();
+        return result;
+    }).catch(err => {
+        closeConnection();
+        throw err;
+    });
+}
+
 async function deleteFromCollectionById(collection, id) {
     await openConnection();
     return db.collection(collection).deleteOne({_id: new mongo.ObjectID(id)}).then(result => {
@@ -52,5 +63,6 @@ async function deleteFromCollectionById(collection, id) {
 module.exports = {
     writeToCollection,
     getAllFromCollection,
-    deleteFromCollectionById
+    deleteFromCollectionById,
+    getFromCollectionById
 }

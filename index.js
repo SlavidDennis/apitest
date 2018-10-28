@@ -22,8 +22,18 @@ app.post('/car', (request, response) => {
     });
 });
 
-app.get('/car', (request, response) => {
+app.get('/cars', (request, response) => {
     db.getAllFromCollection("car").then(result => {
+        response.type('application/json');
+        response.status(200).send(result);
+    }).catch(err => {
+        response.status(500).send('Internal server error.\n' + err);
+    });
+});
+
+app.get('/car/:id', (request, response) => {
+    let id = request.params.id;
+    db.getFromCollectionById("car", id).then(result => {
         response.type('application/json');
         response.status(200).send(result);
     }).catch(err => {
