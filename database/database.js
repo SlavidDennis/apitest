@@ -17,18 +17,29 @@ function closeConnection() {
 }
 
 async function writeToCollection(data, collection) {
-    let numberOfDocs = (data.length);
     await openConnection();
-    await db.collection(collection).insert(data, function (err, res) {
-        if (err) {
-            console.log('An error occured')
-            throw err;
-        }
+    return db.collection(collection).insertOne(data).then(result => {
+        closeConnection();
+        return result.insertedId;
+    }).catch(err => {
+        closeConnection();
+        throw err;
     });
-    console.log(`${numberOfDocs} DOCUMENTS SAVED TO DB`);
-    closeConnection();
+}
+
+async function getAllFromCollection(collection) {
+    await openConnection();
+    return db.collection(collection).find().toArray().then(result => {
+        closeConnection();
+        console.log(result);
+        return result;
+    }).catch(err => {
+        closeConnection();
+        throw err;
+    });
 }
 
 module.exports = {
-    writeToCollection
+    writeToCollection,
+    getAllFromCollection
 }
