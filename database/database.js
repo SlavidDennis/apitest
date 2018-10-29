@@ -7,7 +7,7 @@ let client;
 let db;
 
 async function openConnection() {
-    client = await MongoClient.connect(url);
+    client = await MongoClient.connect(url, {useNewUrlParser : true});
     db = client.db(dbName);
     return db;
 }
