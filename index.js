@@ -17,7 +17,7 @@ app.post('/car', (request, response) => {
     db.writeToCollection(data, "car").then(result => {
         response.status(201).json({created : result});
     }).catch(err => {
-        response.status(500).send('Internal server error.\n' + err);
+        response.status(500).json({error : err});
     });
 });
 
@@ -26,35 +26,36 @@ app.get('/cars', (request, response) => {
         response.type('application/json');
         response.status(200).send(result);
     }).catch(err => {
-        response.status(500).send('Internal server error.\n' + err);
+        response.status(500).json({error : err});
     });
 });
 
 app.get('/car/:id', (request, response) => {
-    let id = request.params.id;
+    const id = request.params.id;
     db.getFromCollectionById("car", id).then(result => {
         response.type('application/json');
         response.status(200).send(result);
     }).catch(err => {
-        response.status(500).send('Internal server error.\n' + err);
+        response.status(500).json({error : err});
     });
 });
 
 app.delete('/car/:id', (request, response) => {
-    let id = request.params.id;
+    const id = request.params.id;
     db.deleteFromCollectionById("car", id).then(result => {
-        response.json({success : id});
+        response.json({deleted : id});
     }).catch(err => {
-        response.status(500).send('Internal server error.\n' + err);
+        response.status(500).json({error : err});
     });
 });
 
 app.put('/car', (request, response) => {
     const data = request.body;
+    const id = data._id;
     db.updateInCollection(data, "car").then(result => {
-        response.json({updated : result});
+        response.json({updated : id});
     }).catch(err => {
-        response.status(500).send('Internal server error.\n' + err);
+        response.status(500).json({error : err});
     });
 });
 
