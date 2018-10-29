@@ -1,0 +1,24 @@
+{
+    "manufacturer": "Mercedes",
+    "model": "C63 Coupé",
+    "engine": {
+        "powerInKw": "350",
+        "displacementInCc": "3982",
+        "fuelType": "Petrol"
+    },
+    "performance": {
+        "accelTo100KmhInSec": "4.0",
+        "coExhaustInGramPerKm": "230",
+        "mileageInLiterPer100Km": "10.1"
+    },
+    "colors": [
+        "Poolwit",
+        "Selenietgrijs",
+        "Obsidiaanzwart",
+        "Iridium zilver",
+        "Grafietgrijs",
+        "Briljantblauw",
+        "Grafietgrijs magno",
+        "Designo diamant helder wit"
+    ]
+}
