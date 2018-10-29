@@ -8,17 +8,16 @@ const bodyParser = require('body-parser');
 const app = express();
 const db = require('./database/database');
 
-app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.json());
 app.use(express.json({ limit: '4mb' }));
 app.use(express.urlencoded({ limit: '4mb', extended: true }));
 
 app.post('/car', (request, response) => {
     const data = request.body;
     db.writeToCollection(data, "car").then(result => {
-        response.type('application/json');
-        response.json({created : result});
+        response.status(201).json({created : result});
     }).catch(err => {
-        response.status(400).send('Bad request.\n' + err);
+        response.status(500).send('Internal server error.\n' + err);
     });
 });
 
@@ -53,10 +52,9 @@ app.delete('/car/:id', (request, response) => {
 app.put('/car', (request, response) => {
     const data = request.body;
     db.updateInCollection(data, "car").then(result => {
-        response.type('application/json');
         response.json({updated : result});
     }).catch(err => {
-        response.status(400).send('Bad request.\n' + err);
+        response.status(500).send('Internal server error.\n' + err);
     });
 });
 
